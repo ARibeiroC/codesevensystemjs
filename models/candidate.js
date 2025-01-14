@@ -1,13 +1,15 @@
 import mongoose from "mongoose";
 
-const Candidate = mongoose.model('Candidate', {
-    registerCandidate: String,
-    nameComplete: String,
-    emailCandidate: String,
-    telephoneCandidate: String,
-    nameResponsible: String,
-    cellphoneResponsible: String,
-    passwordCandidate: String,
-})
+const candidateSchema = new mongoose.Schema({
+    registerCandidate: { type: String, required: true},
+    nameComplete: { type: String, required: true},
+    emailCandidate: { type: String, required: true, unique: true}, // Garantindo que o email seja único
+    telephoneCandidate: { type: String, required: true},
+    nameResponsible: { type: String, required: true},
+    cellphoneResponsible: { type: String, required: true},
+    passwordCandidate: { type: String, required: true},
+    accessLevel: {type: String, required: true}
+});
 
-export default Candidate
+const Candidate = mongoose.model('Candidate', candidateSchema)
+export {candidateSchema, Candidate}
