@@ -2,23 +2,24 @@ import express from 'express'
 import cors from 'cors'
 import { Candidate } from './models/candidate.js'
 import { app } from './connection.js'
-import { connection } from './db/conn.js'
+// import { connection } from './db/conn.js'
 import mongoose from 'mongoose'
 
 const port = process.env.PORT || 3000
 
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@codesevenacademyerp.ovupv.mongodb.net/codeseven?retryWrites=true&w=majority&appName=codesevenacademyerp`
-mongoose.connect(uri)
-    .then(()=>{
-        responseServer()
-        console.log('Conexão estabelecida!')
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
+async function connection(){
+    try {
+        await mongoose.connect(uri)
+        console.log("Conexão estabelecida")
+    } catch (error) {
+        console.log("Ouve um problema com a conexão", error)
+    }
+}
 
 app.use(express.json())
 app.use(cors(`http://localhost:${port}/`))
+
 
 app.get('/', (req, res)=>{
     res.send({"msg":"Deploy funcionando"})
@@ -50,6 +51,7 @@ app.get('/candidates', async (req, res)=>{
 
 const responseServer = ()=>{
     console.log(`Servidor no ar em http://localhost:${port}`)
+    connection()
 }
 
-app.listen(port)
+app.listen(port, responseServer)
