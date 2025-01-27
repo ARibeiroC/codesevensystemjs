@@ -27,18 +27,24 @@ app.get('/', (req, res)=>{
 
 app.post('/candidates', async (req, res)=>{
     try {
-        const candidate = new Candidate({
-            registerCandidate: req.body.registerCandidate,
-            nameComplete: req.body.nameComplete,
-            emailCandidate: req.body.emailCandidate,
-            telephoneCandidate: req.body.telephoneCandidate,
-            nameResponsible: req.body.nameResponsible,
-            cellphoneResponsible: req.body.cellphoneResponsible,
-            passwordCandidate: req.body.passwordCandidate,
-        })
-
-        await candidate.save()
-        res.send(candidate)
+        if (req.body) {
+            const candidate = new Candidate({
+                registerCandidate: req.body.registerCandidate,
+                nameComplete: req.body.nameComplete,
+                emailCandidate: req.body.emailCandidate,
+                telephoneCandidate: req.body.telephoneCandidate,
+                nameResponsible: req.body.nameResponsible,
+                cellphoneResponsible: req.body.cellphoneResponsible,
+                passwordCandidate: req.body.passwordCandidate,
+                accessLevel: req.body.accessLevel
+            })
+    
+            await candidate.save()
+            console.log(candidate)
+            res.send(candidate)
+        } else {
+            console.log(req.body)
+        }
     } catch (error) {
         console.log(error)
     }
